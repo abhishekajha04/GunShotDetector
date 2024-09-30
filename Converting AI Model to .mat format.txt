@@ -1,0 +1,25 @@
+import scipy.io
+import numpy as np
+from tensorflow.keras.models import load_model
+
+# Load trained model
+model = load_model('GunShotDetectorModel.h5')
+
+input_data = np.random.rand(1, 16000)  # Example: 1 audio clip of 16000 samples
+
+# Make predictions using the model
+predictions = model.predict(input_data)
+
+# Convert model weights to numpy arrays
+weights = model.get_weights()
+
+# Optionally, save model architecture as a string
+model_json = model.to_json()
+
+# Save all information to a .mat file
+scipy.io.savemat('TrainedModel.mat', {
+    'weights': weights,          # Save the model's weights
+    'input_data': input_data,    # Save the input data
+    'predictions': predictions,  # Save the predictions made by the model
+    'model_architecture': model_json  # Save the model architecture as a string (optional)
+})
